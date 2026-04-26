@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onkruid Veldtool</title>
+
+<style>
+body {font-family: Arial; margin:0; background:#eef2ef;}
+header {background:#1b5e20; color:white; padding:12px; text-align:center;}
+.controls {padding:10px; background:white; position:sticky; top:0;}
+input, select {
+  width:100%; padding:8px; margin:5px 0;
+  border-radius:8px; border:1px solid #ccc;
+}
+.card {
+  background:white; margin:10px; padding:10px;
+  border-radius:10px;
+}
+img {width:100%; border-radius:8px;}
+.small {font-size:14px; color:#555;}
+</style>
+</head>
+
+<body>
+
+<header>🌱 Onkruid Veldtool</header>
+
+<div class="controls">
+<input type="text" id="search" placeholder="Zoek...">
+<select id="gewas">
+<option value="">Alle gewassen</option>
+<option value="ui">Ui</option>
+<option value="biet">Biet</option>
+<option value="mais">Mais</option>
+</select>
+</div>
+
+<div id="list"></div>
+
+<script>
+const data = [
+
+{name:"Melganzevoet", gewas:["ui","biet","mais"],
+img:"https://upload.wikimedia.org/wikipedia/commons/6/6b/Chenopodium_album_seedling.jpg",
+info:"Grijzig, meelachtig blad",
+advies:"Vroeg aanpakken, lage dosering herhalen"},
+
+{name:"Vogelmuur", gewas:["ui","biet"],
+img:"https://upload.wikimedia.org/wikipedia/commons/4/4c/Stellaria_media_plant.jpg",
+info:"Tegenoverstaand blad",
+advies:"Goed te raken jong"},
+
+{name:"Zwarte nachtschade", gewas:["ui","biet","mais"],
+img:"https://upload.wikimedia.org/wikipedia/commons/8/8f/Solanum_nigrum_seedling.jpg",
+info:"Donkergroen blad",
+advies:"Vroeg corrigeren"},
+
+{name:"Kleefkruid", gewas:["biet","mais"],
+img:"https://upload.wikimedia.org/wikipedia/commons/3/3f/Galium_aparine_seedling.jpg",
+info:"Plakkerig, kransblad",
+advies:"Niet te laat zijn"},
+
+{name:"Straatgras", gewas:["ui","biet","mais"],
+img:"https://upload.wikimedia.org/wikipedia/commons/0/0b/Poa_annua_seedling.jpg",
+info:"Lichtgroen gras",
+advies:"Grassen apart aanpakken"}
+
+];
+
+function render() {
+let s = document.getElementById("search").value.toLowerCase();
+let g = document.getElementById("gewas").value;
+
+let html = "";
+
+data.forEach(w => {
+if(s && !w.name.toLowerCase().includes(s)) return;
+if(g && !w.gewas.includes(g)) return;
+
+html += `
+<div class="card">
+<img src="${w.img}">
+<h3>${w.name}</h3>
+<p class="small">${w.info}</p>
+<p class="small"><b>Advies:</b> ${w.advies}</p>
+</div>`;
+});
+
+document.getElementById("list").innerHTML = html;
+}
+
+document.getElementById("search").oninput = render;
+document.getElementById("gewas").onchange = render;
+
+render();
+</script>
+
+</body>
+</html>
